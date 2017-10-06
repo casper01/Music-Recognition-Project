@@ -1,0 +1,28 @@
+﻿using Accord.Statistics.Distributions.Multivariate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MusicRecognition.GaussianMixtureModels
+{
+    class Cluster
+    {
+        public double[] Mean { get; private set; }
+        public double[,] Covariance { get; private set; }
+        public double Weight { get; private set; }
+        public double Members { get; private set; }
+        public int Dimension => Mean.Length;
+
+        public double GetProbability (double[] song)
+        {
+            return Weight * MathHelper.NormalDistribution(Mean, Covariance, song);
+        }
+        
+	    public Cluster(double[] Mean, double[,] Covariance, double Weight)
+	    {
+		    
+	    }
+    }
+}

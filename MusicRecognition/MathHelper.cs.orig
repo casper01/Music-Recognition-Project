@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Accord.Statistics;
+using MathNet.Numerics.LinearAlgebra;
+
+namespace MusicRecognition
+{
+	public static class MathHelper
+	{
+		public static double EuclideanDistance(double[] vector1, double[] vector2)
+		{
+			if(vector1.Length != vector2.Length)
+				throw new ArgumentException("Vectors for Euclidean distance must be the same length!");
+			double distance = 0;
+			for (int i = 0; i < vector1.Length; i++)
+			{
+				distance += (vector1[i] - vector2[i])*(vector1[i] - vector2[i]);
+			}
+			distance = Math.Sqrt(distance);
+
+			return distance;
+		}
+
+		public static double[,] multiply2AndAddTwoMatrices(double[,] m1, double[,] m2)
+		{
+			if (m1.GetLength(0) != m2.GetLength(0) || m1.GetLength(1) != m2.GetLength(1))
+				throw new ArgumentException("Matrices to add must be the same dimension!");
+			int n = m1.GetLength(0);
+			int m = m1.GetLength(1);
+			double[,] result = new double[m1.GetLength(0), m1.GetLength(1)];
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+				{
+					result[i, j] = 2 * m1[i, j] + 2 * m2[i, j];
+				}
+			return result;
+		}
+
+		public static double[,] divideNMatrix(double[,] matrix, double div)
+		{
+			int n = matrix.GetLength(0);
+			int m = matrix.GetLength(1);
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+				{
+					matrix[i, j] /= div;
+				}
+			return matrix;
+		}
+		public static double[,] CalculateMatrixCovariance(double[] v1, double[] v2)
+		{
+			if (v1.Length != v2.Length)
+				throw new ArgumentException("Vectors for covariance matrix must be the same length!");
+
+			double[,] matrix = new double[2,v1.Length];
+
+			for (int i = 0; i < v1.Length; i++)
+			{
+				matrix[0, i] = v1[i];
+				matrix[1, i] = v2[i];
+			}
+
+			var covMatrix = matrix.Covariance();
+			return covMatrix;
+		}
+
+        public static double NormalDistribution(double[] mean, double[,] covarianceMatrix, double[] value)
+        {
+            int d = mean.Length;
+            Matrix<double> covariance = Matrix<double>.Build.DenseOfArray(covarianceMatrix);
+            double ans = 1 / Math.Pow((2 * Math.PI), d / 2);
+            ans *= Math.Pow(covariance.Determinant(), -0.5);
+
+            Vector<double> meanVector = Vector<double>.Build.DenseOfArray(mean);
+            Vector<double> valueVector = Vector<double>.Build.DenseOfArray(value);
+            Matrix<double> invertedCovariance = covariance.Inverse();
+            var diff = valueVector.Subtract(meanVector);
+            Vector<double> result = invertedCovariance.LeftMultiply(diff);
+            double exp = result * diff;
+            exp *= -0.5;
+            exp = Math.Exp(exp);
+            return ans * exp;
+        }
+
+        public static double[] GetMeanVector(double[][] vectors, double[] weights)
+        {
+            int m = vectors.Length;
+            double[] mean = new double[vectors[0].Length];
+
+            int j = 0;
+            foreach (double[] vector in vectors)
+            {
+                for (int i = 0; i < vector.Length; i++)
+                    mean[i] += vector[i] * weights[j];
+                j++;
+            }
+            for (int i = 0; i < mean.Length; i++)
+                mean[i] /= m;
+
+            return mean;
+        }
+
+        public static double[,] GetMeanCovariance(double[][] vectors, double[] meanVector, double[] weights)
+        {
+            int m = meanVector.Length;
+            double[,] ans = new double[m, m];
+            Vector<double> mean = Vector<double>.Build.DenseOfArray(meanVector);
+
+            int k = 0;
+            foreach (double[] vector in vectors)
+            {
+                Vector<double> v = Vector<double>.Build.DenseOfArray(vector);
+                var diff = v.Subtract(mean);
+                for (int i = 0; i < m; i++)
+                    for (int j = 0; j < m; j++)
+                        ans[i, j] += diff[i] * diff[j] * weights[k];
+                k++;
+            }
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < m; j++)
+                    ans[i, j] /= m;
+            return ans;
+        }
+    }
+}

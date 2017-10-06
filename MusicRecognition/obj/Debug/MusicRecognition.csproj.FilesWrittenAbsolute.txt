@@ -1,0 +1,10 @@
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/obj/Debug/.NETFramework,Version=v4.5.2.AssemblyAttribute.cs
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/obj/Debug/MusicRecognition.Properties.Resources.resources
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/Accord.dll
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/Accord.MachineLearning.dll
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/Accord.Math.dll
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/Accord.Statistics.dll
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/alglibnet2.dll
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/DynamicDataDisplay.dll
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/MathNet.Numerics.dll
+/home/kacper/Dokumenty/MusicRecognitionProject/MusicRecognition/MusicRecognition/bin/Debug/System.Data.SQLite.dll
